@@ -36,6 +36,9 @@ To add additional tags, add the following to the configuration:
 
     config.tags = ['role:myapp', 'host:myapp-1', 'region:east']
 
+Override the default metric name with the following configuration:
+
+    config.metric = :rails_performance
 
 ## Contributing
 
