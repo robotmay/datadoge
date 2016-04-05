@@ -19,10 +19,11 @@ module Datadoge
         event = ActiveSupport::Notifications::Event.new(*args)
         controller = "controller:#{event.payload[:controller]}"
         action = "action:#{event.payload[:action]}"
+        controller_action = "controller_action:#{event.payload[:controller]}##{event.payload[:action]}"
         format = "format:#{event.payload[:format] || 'all'}"
         format = "format:all" if format == "format:*/*"
         status = event.payload[:status]
-        tags = [controller, action, format] + Datadoge.configuration.tags
+        tags = [controller, action, controller_action, format] + Datadoge.configuration.tags
         metric = Datadoge.configuration.metric
         ActiveSupport::Notifications.instrument metric, :action => :timing, :tags => tags, :measurement => "request.total_duration", :value => event.duration
         ActiveSupport::Notifications.instrument metric, :action => :timing, :tags => tags, :measurement => "database.query.time", :value => event.payload[:db_runtime]
